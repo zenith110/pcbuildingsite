@@ -1,4 +1,4 @@
-package main
+package backend
 
 import (
 	"github.com/gofiber/fiber/v2"

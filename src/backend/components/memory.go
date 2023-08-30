@@ -10,7 +10,7 @@ import (
 type Memory struct {
 	ID            string `json:"id,omitempty"`
 	Name          string `json:"name"`
-	Generation    string `json:"surname"`
+	Generation    string `json:"generation"`
 	Manufacturer  string `json:"manufacturer"`
 	Platform      string `json:"platform"`
 	Frequency     string `json:"frequency"`

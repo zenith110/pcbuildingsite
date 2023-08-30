@@ -10,7 +10,7 @@ import (
 type Cpu struct {
 	ID            string `json:"id,omitempty"`
 	Name          string `json:"name"`
-	Generation    string `json:"surname"`
+	Generation    string `json:"generation"`
 	Manufacturer  string `json:"manufacturer"`
 	Platform      string `json:"platform"`
 	Sold          bool   `json:"sold"`
