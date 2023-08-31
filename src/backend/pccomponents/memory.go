@@ -1,4 +1,4 @@
-package components
+package pccomponents
 
 import (
 	"fmt"
@@ -17,6 +17,7 @@ type Memory struct {
 	Sold          bool   `json:"sold"`
 	DatePurchased string `json:"datepurchased"`
 	DateSold      string `json:"datesold"`
+	InStock       bool   `json:"instock"`
 }
 
 type MemoryCollection struct {
@@ -29,11 +30,11 @@ func CreateMemory(c *fiber.Ctx, db *surrealdb.DB) error {
 		fmt.Println("error = ", err)
 		panic(err)
 	}
-	if _, err := db.Use("ComputerParts", "memory"); err != nil {
+	if _, err := db.Use("ComputerParts", "Memory"); err != nil {
 		panic(err)
 	}
 	// Insert memory
-	_, err := db.Create("memory", memory)
+	_, err := db.Create("Memory", memory)
 	if err != nil {
 		panic(err)
 	}
@@ -46,7 +47,7 @@ func GetMemory(c *fiber.Ctx, db *surrealdb.DB) (Memory, error) {
 		fmt.Println("error = ", err)
 		panic(err)
 	}
-	if _, err := db.Use("ComputerParts", "memory"); err != nil {
+	if _, err := db.Use("ComputerParts", "Memory"); err != nil {
 		panic(err)
 	}
 	data, err := db.Select(memory.ID)

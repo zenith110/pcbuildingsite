@@ -2,28 +2,12 @@ package backend
 
 import (
 	"github.com/gofiber/fiber/v2"
-	components "github.com/m/zenith110/pcbuildingsite/components"
+	router "github.com/m/zenith110/pcbuildingsite/router"
 )
 
 func main() {
 	app := fiber.New()
-	db := components.SignIn()
-	app.Get("/cpu/", func(c *fiber.Ctx) error {
-		_, err := components.GetCpu(c, db)
-		return err
-	})
-	app.Post("/cpu/", func(c *fiber.Ctx) error {
-		_, err := components.CreateCpu(c, db)
-		return err
-	})
-	app.Get("/memory/", func(c *fiber.Ctx) error {
-		_, err := components.GetMemory(c, db)
-		return err
-	})
-	app.Post("/memory/", func(c *fiber.Ctx) error {
-		err := components.CreateMemory(c, db)
-		return err
-	})
-
+	db := SignIn()
+	router.SetupAllRoutes(app, db)
 	app.Listen(":8080")
 }

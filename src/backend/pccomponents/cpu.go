@@ -1,4 +1,4 @@
-package components
+package pccomponents
 
 import (
 	"fmt"
@@ -16,6 +16,7 @@ type Cpu struct {
 	Sold          bool   `json:"sold"`
 	DatePurchased string `json:"datepurchased"`
 	DateSold      string `json:"datesold"`
+	InStock       bool   `json:"instock"`
 }
 
 type Cpus struct {

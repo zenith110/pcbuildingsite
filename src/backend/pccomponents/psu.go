@@ -1,4 +1,4 @@
-package components
+package pccomponents
 
 import (
 	"fmt"
@@ -16,13 +16,14 @@ type Psu struct {
 	Sold            bool   `json:"sold"`
 	DatePurchased   string `json:"datepurchased"`
 	DateSold        string `json:"datesold"`
+	InStock         bool   `json:"instock"`
 }
 
 type Psus struct {
 	PsuList []Psu `json:"PsuList"`
 }
 
-func CreatePsu(c *fiber.Ctx, db *surrealdb.DB) (Psu, error) {
+func CreatePsu(c *fiber.Ctx, db *surrealdb.DB) error {
 	if _, err := db.Use("ComputerParts", "Psu"); err != nil {
 		panic(err)
 	}
@@ -36,7 +37,7 @@ func CreatePsu(c *fiber.Ctx, db *surrealdb.DB) (Psu, error) {
 	if err != nil {
 		panic(err)
 	}
-	return *psu, err
+	return err
 }
 
 func GetPsu(c *fiber.Ctx, db *surrealdb.DB) (Psu, error) {
