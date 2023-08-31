@@ -1,4 +1,4 @@
-package pccomponents
+package inventory
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ type Motherboards struct {
 }
 
 func CreateMotherboard(c *fiber.Ctx, db *surrealdb.DB) (Motherboard, error) {
-	if _, err := db.Use("ComputerParts", "Motherboard"); err != nil {
+	if _, err := db.Use("Inventory", "Motherboard"); err != nil {
 		panic(err)
 	}
 	motherboard := new(Motherboard)
@@ -41,7 +41,7 @@ func CreateMotherboard(c *fiber.Ctx, db *surrealdb.DB) (Motherboard, error) {
 }
 
 func GetMotherboard(c *fiber.Ctx, db *surrealdb.DB) (Motherboard, error) {
-	if _, err := db.Use("ComputerParts", "Motherboard"); err != nil {
+	if _, err := db.Use("Inventory", "Motherboard"); err != nil {
 		panic(err)
 	}
 	motherboard := new(Motherboard)
@@ -64,7 +64,7 @@ func GetMotherboard(c *fiber.Ctx, db *surrealdb.DB) (Motherboard, error) {
 }
 
 func DeleteMotherboard(c *fiber.Ctx, db *surrealdb.DB) error {
-	if _, err := db.Use("ComputerParts", "Motherboard"); err != nil {
+	if _, err := db.Use("Inventory", "Motherboard"); err != nil {
 		panic(err)
 	}
 	var err error

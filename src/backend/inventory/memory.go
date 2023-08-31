@@ -1,4 +1,4 @@
-package pccomponents
+package inventory
 
 import (
 	"fmt"
@@ -30,7 +30,7 @@ func CreateMemory(c *fiber.Ctx, db *surrealdb.DB) error {
 		fmt.Println("error = ", err)
 		panic(err)
 	}
-	if _, err := db.Use("ComputerParts", "Memory"); err != nil {
+	if _, err := db.Use("Inventory", "Memory"); err != nil {
 		panic(err)
 	}
 	// Insert memory
@@ -47,7 +47,7 @@ func GetMemory(c *fiber.Ctx, db *surrealdb.DB) (Memory, error) {
 		fmt.Println("error = ", err)
 		panic(err)
 	}
-	if _, err := db.Use("ComputerParts", "Memory"); err != nil {
+	if _, err := db.Use("Inventory", "Memory"); err != nil {
 		panic(err)
 	}
 	data, err := db.Select(memory.ID)

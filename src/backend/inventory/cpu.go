@@ -1,4 +1,4 @@
-package pccomponents
+package inventory
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ type Cpus struct {
 }
 
 func CreateCpu(c *fiber.Ctx, db *surrealdb.DB) (Cpu, error) {
-	if _, err := db.Use("ComputerParts", "CPU"); err != nil {
+	if _, err := db.Use("Inventory", "CPU"); err != nil {
 		panic(err)
 	}
 	cpu := new(Cpu)
@@ -41,7 +41,7 @@ func CreateCpu(c *fiber.Ctx, db *surrealdb.DB) (Cpu, error) {
 }
 
 func GetCpu(c *fiber.Ctx, db *surrealdb.DB) (Cpu, error) {
-	if _, err := db.Use("ComputerParts", "CPU"); err != nil {
+	if _, err := db.Use("Inventory", "CPU"); err != nil {
 		panic(err)
 	}
 	cpu := new(Cpu)
@@ -64,7 +64,7 @@ func GetCpu(c *fiber.Ctx, db *surrealdb.DB) (Cpu, error) {
 }
 
 func DeleteCpu(c *fiber.Ctx, db *surrealdb.DB) error {
-	if _, err := db.Use("ComputerParts", "CPU"); err != nil {
+	if _, err := db.Use("Inventory", "CPU"); err != nil {
 		panic(err)
 	}
 	var err error

@@ -10,4 +10,5 @@ func SetupAllRoutes(app *fiber.App, db *surrealdb.DB) {
 	SetupMemoryRouter(app, db)
 	SetupPsuRouter(app, db)
 	SetupMotherboardRouter(app, db)
+	SetupComputerRouter(app, db)
 }

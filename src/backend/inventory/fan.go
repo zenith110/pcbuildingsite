@@ -1,4 +1,4 @@
-package pccomponents
+package inventory
 
 import (
 	"fmt"
@@ -23,7 +23,7 @@ type Fans struct {
 }
 
 func CreateFan(c *fiber.Ctx, db *surrealdb.DB) (Fan, error) {
-	if _, err := db.Use("ComputerParts", "Fan"); err != nil {
+	if _, err := db.Use("Inventory", "Fan"); err != nil {
 		panic(err)
 	}
 	fan := new(Fan)
@@ -40,7 +40,7 @@ func CreateFan(c *fiber.Ctx, db *surrealdb.DB) (Fan, error) {
 }
 
 func GetFan(c *fiber.Ctx, db *surrealdb.DB) (Fan, error) {
-	if _, err := db.Use("ComputerParts", "Fan"); err != nil {
+	if _, err := db.Use("Inventory", "Fan"); err != nil {
 		panic(err)
 	}
 	fan := new(Fan)
@@ -63,7 +63,7 @@ func GetFan(c *fiber.Ctx, db *surrealdb.DB) (Fan, error) {
 }
 
 func DeleteFan(c *fiber.Ctx, db *surrealdb.DB) error {
-	if _, err := db.Use("ComputerParts", "Fan"); err != nil {
+	if _, err := db.Use("Inventory", "Fan"); err != nil {
 		panic(err)
 	}
 	var err error

@@ -1,4 +1,4 @@
-package pccomponents
+package inventory
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ type Psus struct {
 }
 
 func CreatePsu(c *fiber.Ctx, db *surrealdb.DB) error {
-	if _, err := db.Use("ComputerParts", "Psu"); err != nil {
+	if _, err := db.Use("Inventory", "Psu"); err != nil {
 		panic(err)
 	}
 	psu := new(Psu)
@@ -41,7 +41,7 @@ func CreatePsu(c *fiber.Ctx, db *surrealdb.DB) error {
 }
 
 func GetPsu(c *fiber.Ctx, db *surrealdb.DB) (Psu, error) {
-	if _, err := db.Use("ComputerParts", "Psu"); err != nil {
+	if _, err := db.Use("Inventory", "Psu"); err != nil {
 		panic(err)
 	}
 	psu := new(Psu)
@@ -64,7 +64,7 @@ func GetPsu(c *fiber.Ctx, db *surrealdb.DB) (Psu, error) {
 }
 
 func DeletePsu(c *fiber.Ctx, db *surrealdb.DB) error {
-	if _, err := db.Use("ComputerParts", "Psu"); err != nil {
+	if _, err := db.Use("Inventory", "Psu"); err != nil {
 		panic(err)
 	}
 	var err error

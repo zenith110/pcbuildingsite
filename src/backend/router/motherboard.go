@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	components "github.com/m/zenith110/pcbuildingsite/pccomponents"
+	components "github.com/m/zenith110/pcbuildingsite/inventory"
 	"github.com/surrealdb/surrealdb.go"
 )
 
