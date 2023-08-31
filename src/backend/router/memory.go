@@ -15,4 +15,8 @@ func SetupMemoryRouter(app *fiber.App, db *surrealdb.DB) {
 		err := components.CreateMemory(c, db)
 		return err
 	})
+	app.Delete("/memory/", func(c *fiber.Ctx) error {
+		err := components.DeleteMemory(c, db)
+		return err
+	})
 }

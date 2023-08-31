@@ -15,4 +15,8 @@ func SetUpCpuRouter(app *fiber.App, db *surrealdb.DB) {
 		_, err := components.CreateCpu(c, db)
 		return err
 	})
+	app.Delete("/cpu/", func(c *fiber.Ctx) error {
+		err := components.DeleteCpu(c, db)
+		return err
+	})
 }

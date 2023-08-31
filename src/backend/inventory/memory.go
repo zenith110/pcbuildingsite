@@ -63,3 +63,19 @@ func GetMemory(c *fiber.Ctx, db *surrealdb.DB) (Memory, error) {
 	}
 	return *selectedMemory, err
 }
+
+func DeleteMemory(c *fiber.Ctx, db *surrealdb.DB) error {
+	if _, err := db.Use("Inventory", "Memory"); err != nil {
+		panic(err)
+	}
+	var err error
+	memory := new(Memory)
+	if err := c.BodyParser(memory); err != nil {
+		fmt.Println("error = ", err)
+		panic(err)
+	}
+	if _, err := db.Delete(memory.ID); err != nil {
+		panic(err)
+	}
+	return err
+}

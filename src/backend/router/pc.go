@@ -15,4 +15,8 @@ func SetupComputerRouter(app *fiber.App, db *surrealdb.DB) {
 		_, err := components.CreateComputer(c, db)
 		return err
 	})
+	app.Put("/computer/", func(c *fiber.Ctx) error {
+		err := components.UpdateComputer(c, db)
+		return err
+	})
 }

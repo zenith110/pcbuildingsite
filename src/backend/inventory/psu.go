@@ -13,10 +13,10 @@ type Psu struct {
 	PowerEffeciency string `json:"powereffeciency"`
 	Manufacturer    string `json:"manufacturer"`
 	TotalWattage    string `json:"totalwattage"`
-	Sold            bool   `json:"sold"`
+	Sold            string `json:"sold"`
 	DatePurchased   string `json:"datepurchased"`
 	DateSold        string `json:"datesold"`
-	InStock         bool   `json:"instock"`
+	InStock         string `json:"instock"`
 }
 
 type Psus struct {
@@ -76,5 +76,32 @@ func DeletePsu(c *fiber.Ctx, db *surrealdb.DB) error {
 	if _, err := db.Delete(psu.ID); err != nil {
 		panic(err)
 	}
+	return err
+}
+
+func UpdatePSU(c *fiber.Ctx, db *surrealdb.DB) error {
+	if _, err := db.Use("Inventory", "Psu"); err != nil {
+		panic(err)
+	}
+	psu := new(Psu)
+	if err := c.BodyParser(psu); err != nil {
+		fmt.Println("error = ", err)
+		panic(err)
+	}
+	data, err := db.Select(psu.ID)
+	if err != nil {
+		panic(err)
+	}
+
+	// Unmarshal data
+	selectedPsu := new(Psu)
+	err = surrealdb.Unmarshal(data, &selectedPsu)
+	if err != nil {
+		panic(err)
+	}
+	// changes := map[string]string{"name": "Jane"}
+	// if _, err = db.Change(selectedPsu.ID, changes); err != nil {
+	// 	panic(err)
+	// }
 	return err
 }

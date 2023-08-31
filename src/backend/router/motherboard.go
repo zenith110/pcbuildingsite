@@ -15,4 +15,8 @@ func SetupMotherboardRouter(app *fiber.App, db *surrealdb.DB) {
 		_, err := components.CreateMotherboard(c, db)
 		return err
 	})
+	app.Delete("/motherboard/", func(c *fiber.Ctx) error {
+		err := components.DeleteMotherboard(c, db)
+		return err
+	})
 }

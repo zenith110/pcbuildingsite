@@ -15,4 +15,12 @@ func SetupPsuRouter(app *fiber.App, db *surrealdb.DB) {
 		err := components.CreatePsu(c, db)
 		return err
 	})
+	app.Put("/psu/", func(c *fiber.Ctx) error {
+		err := components.UpdatePSU(c, db)
+		return err
+	})
+	app.Delete("/psu/", func(c *fiber.Ctx) error {
+		err := components.DeletePsu(c, db)
+		return err
+	})
 }
