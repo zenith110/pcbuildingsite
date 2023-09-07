@@ -25,4 +25,8 @@ func SetupComputerRouter(app *fiber.App, db *surrealdb.DB) {
 		err := components.DeleteComputer(computerId, db)
 		return err
 	})
+	app.Get("/pcInventory/", func(c *fiber.Ctx) error {
+		data, _ := components.GetPsuInventory(db)
+		return c.JSON(data)
+	})
 }

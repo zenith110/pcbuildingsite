@@ -44,11 +44,7 @@ func GetMotherboard(motherboardId string, db *surrealdb.DB) (Motherboard, error)
 	if _, err := db.Use("Inventory", "Motherboard"); err != nil {
 		panic(err)
 	}
-	motherboard := new(Motherboard)
-	if err := c.BodyParser(motherboard); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
+
 	data, err := db.Select(fmt.Sprintf("motherboard:%s", motherboardId))
 	if err != nil {
 		panic(err)
@@ -72,4 +68,22 @@ func DeleteMotherboard(motherboardId string, db *surrealdb.DB) error {
 		panic(err)
 	}
 	return err
+}
+
+func GetMotherboardInventory(db *surrealdb.DB) (MemoryCollection, error) {
+	if _, err := db.Use("Inventory", "Memory"); err != nil {
+		panic(err)
+	}
+	data, err := db.Select("memory")
+	if err != nil {
+		panic(err)
+	}
+
+	// Unmarshal data
+	selectedMemory := new(MemoryCollection)
+	err = surrealdb.Unmarshal(data, &selectedMemory.MemoryList)
+	if err != nil {
+		panic(err)
+	}
+	return *selectedMemory, err
 }

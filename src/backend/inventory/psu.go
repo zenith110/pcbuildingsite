@@ -97,3 +97,21 @@ func UpdatePSU(c *fiber.Ctx, db *surrealdb.DB) error {
 	}
 	return err
 }
+
+func GetPsuInventory(db *surrealdb.DB) (Psus, error) {
+	if _, err := db.Use("Inventory", "Psu"); err != nil {
+		panic(err)
+	}
+	data, err := db.Select("psu")
+	if err != nil {
+		panic(err)
+	}
+
+	// Unmarshal data
+	psuInventory := new(Psus)
+	err = surrealdb.Unmarshal(data, &psuInventory.PsuList)
+	if err != nil {
+		panic(err)
+	}
+	return *psuInventory, err
+}

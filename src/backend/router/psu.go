@@ -25,4 +25,8 @@ func SetupPsuRouter(app *fiber.App, db *surrealdb.DB) {
 		err := components.DeletePsu(psuId, db)
 		return err
 	})
+	app.Get("/psuInventory/", func(c *fiber.Ctx) error {
+		data, _ := components.GetPsuInventory(db)
+		return c.JSON(data)
+	})
 }

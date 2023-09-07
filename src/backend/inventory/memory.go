@@ -70,3 +70,21 @@ func DeleteMemory(memoryId string, db *surrealdb.DB) error {
 	}
 	return err
 }
+
+func GetMemoryInventory(db *surrealdb.DB) (MemoryCollection, error) {
+	if _, err := db.Use("Inventory", "Memory"); err != nil {
+		panic(err)
+	}
+	data, err := db.Select("memory")
+	if err != nil {
+		panic(err)
+	}
+
+	// Unmarshal data
+	selectedMemory := new(MemoryCollection)
+	err = surrealdb.Unmarshal(data, &selectedMemory.MemoryList)
+	if err != nil {
+		panic(err)
+	}
+	return *selectedMemory, err
+}

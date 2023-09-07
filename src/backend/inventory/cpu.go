@@ -79,3 +79,20 @@ func DeleteCpu(cpuId string, db *surrealdb.DB) error {
 	}
 	return err
 }
+func GetCpuInventory(db *surrealdb.DB) (Cpus, error) {
+	if _, err := db.Use("Inventory", "CPU"); err != nil {
+		panic(err)
+	}
+	data, err := db.Select("cpu")
+	if err != nil {
+		panic(err)
+	}
+
+	// Unmarshal data
+	selectedCpus := new(Cpus)
+	err = surrealdb.Unmarshal(data, &selectedCpus.CpuList)
+	if err != nil {
+		panic(err)
+	}
+	return *selectedCpus, err
+}

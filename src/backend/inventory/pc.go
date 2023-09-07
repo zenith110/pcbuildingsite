@@ -19,6 +19,9 @@ type Computer struct {
 	DateSold      string `json:"datesold"`
 	InStock       bool   `json:"instock"`
 }
+type ComputerInventory struct {
+	ComputerList []Computer `json:"computerlist,omitempty"`
+}
 
 func CreateComputer(c *fiber.Ctx, db *surrealdb.DB) (Computer, error) {
 	if _, err := db.Use("Inventory", "Computer"); err != nil {
@@ -41,11 +44,7 @@ func GetComputer(computerId string, db *surrealdb.DB) (Computer, error) {
 	if _, err := db.Use("Inventory", "Computer"); err != nil {
 		panic(err)
 	}
-	computer := new(Computer)
-	if err := c.BodyParser(computer); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
+
 	data, err := db.Select(fmt.Sprintf("computer:%s", computerId))
 	if err != nil {
 		panic(err)
@@ -69,7 +68,7 @@ func UpdateComputer(c *fiber.Ctx, db *surrealdb.DB) error {
 		fmt.Println("error = ", err)
 		panic(err)
 	}
-	data, err := db.Select(fmt.Sprintf("computer:%s", computerId))
+	data, err := db.Select(fmt.Sprintf("computer:%s", computer.ID))
 	if err != nil {
 		panic(err)
 	}
@@ -96,4 +95,22 @@ func DeleteComputer(computerId string, db *surrealdb.DB) error {
 		panic(err)
 	}
 	return err
+}
+
+func GetComputerInventory(db *surrealdb.DB) (ComputerInventory, error) {
+	if _, err := db.Use("Inventory", "Computer"); err != nil {
+		panic(err)
+	}
+	data, err := db.Select("computer")
+	if err != nil {
+		panic(err)
+	}
+
+	// Unmarshal data
+	computerInventory := new(ComputerInventory)
+	err = surrealdb.Unmarshal(data, &computerInventory.ComputerList)
+	if err != nil {
+		panic(err)
+	}
+	return *computerInventory, err
 }

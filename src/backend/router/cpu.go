@@ -12,6 +12,10 @@ func SetUpCpuRouter(app *fiber.App, db *surrealdb.DB) {
 		data, _ := components.GetCpu(cpuId, db)
 		return c.JSON(data)
 	})
+	app.Get("/cpuInventory/", func(c *fiber.Ctx) error {
+		data, _ := components.GetCpuInventory(db)
+		return c.JSON(data)
+	})
 	app.Post("/cpu/", func(c *fiber.Ctx) error {
 		data, _ := components.CreateCpu(c, db)
 		return c.JSON(data)

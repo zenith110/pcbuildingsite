@@ -67,3 +67,21 @@ func DeleteFan(fanId string, db *surrealdb.DB) error {
 	}
 	return err
 }
+
+func GetFanInventory(db *surrealdb.DB) (Fans, error) {
+	if _, err := db.Use("Inventory", "Fan"); err != nil {
+		panic(err)
+	}
+	data, err := db.Select("fan")
+	if err != nil {
+		panic(err)
+	}
+
+	// Unmarshal data
+	selectedFans := new(Fans)
+	err = surrealdb.Unmarshal(data, &selectedFans.FanList)
+	if err != nil {
+		panic(err)
+	}
+	return *selectedFans, err
+}

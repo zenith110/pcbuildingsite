@@ -21,4 +21,8 @@ func SetupMotherboardRouter(app *fiber.App, db *surrealdb.DB) {
 		err := components.DeleteMotherboard(motherboardId, db)
 		return err
 	})
+	app.Get("/motherboardInventory/", func(c *fiber.Ctx) error {
+		data, _ := components.GetMotherboardInventory(db)
+		return c.JSON(data)
+	})
 }
