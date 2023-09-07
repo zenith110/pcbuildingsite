@@ -40,7 +40,7 @@ func CreateMotherboard(c *fiber.Ctx, db *surrealdb.DB) (Motherboard, error) {
 	return *motherboard, err
 }
 
-func GetMotherboard(c *fiber.Ctx, db *surrealdb.DB) (Motherboard, error) {
+func GetMotherboard(motherboardId string, db *surrealdb.DB) (Motherboard, error) {
 	if _, err := db.Use("Inventory", "Motherboard"); err != nil {
 		panic(err)
 	}
@@ -49,7 +49,7 @@ func GetMotherboard(c *fiber.Ctx, db *surrealdb.DB) (Motherboard, error) {
 		fmt.Println("error = ", err)
 		panic(err)
 	}
-	data, err := db.Select(motherboard.ID)
+	data, err := db.Select(fmt.Sprintf("motherboard:%s", motherboardId))
 	if err != nil {
 		panic(err)
 	}
@@ -63,17 +63,12 @@ func GetMotherboard(c *fiber.Ctx, db *surrealdb.DB) (Motherboard, error) {
 	return *selectedMotherboard, err
 }
 
-func DeleteMotherboard(c *fiber.Ctx, db *surrealdb.DB) error {
+func DeleteMotherboard(motherboardId string, db *surrealdb.DB) error {
 	if _, err := db.Use("Inventory", "Motherboard"); err != nil {
 		panic(err)
 	}
 	var err error
-	motherboard := new(Motherboard)
-	if err := c.BodyParser(motherboard); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
-	if _, err := db.Delete(motherboard.ID); err != nil {
+	if _, err := db.Delete(fmt.Sprintf("motherboard:%s", motherboardId)); err != nil {
 		panic(err)
 	}
 	return err

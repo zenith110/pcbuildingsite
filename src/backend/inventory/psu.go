@@ -40,16 +40,12 @@ func CreatePsu(c *fiber.Ctx, db *surrealdb.DB) error {
 	return err
 }
 
-func GetPsu(c *fiber.Ctx, db *surrealdb.DB) (Psu, error) {
+func GetPsu(psuId string, db *surrealdb.DB) (Psu, error) {
 	if _, err := db.Use("Inventory", "Psu"); err != nil {
 		panic(err)
 	}
-	psu := new(Psu)
-	if err := c.BodyParser(psu); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
-	data, err := db.Select(psu.ID)
+
+	data, err := db.Select(fmt.Sprintf("psu:%s", psuId))
 	if err != nil {
 		panic(err)
 	}
@@ -63,17 +59,13 @@ func GetPsu(c *fiber.Ctx, db *surrealdb.DB) (Psu, error) {
 	return *selectedPsu, err
 }
 
-func DeletePsu(c *fiber.Ctx, db *surrealdb.DB) error {
+func DeletePsu(psuId string, db *surrealdb.DB) error {
 	if _, err := db.Use("Inventory", "Psu"); err != nil {
 		panic(err)
 	}
 	var err error
-	psu := new(Psu)
-	if err := c.BodyParser(psu); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
-	if _, err := db.Delete(psu.ID); err != nil {
+
+	if _, err := db.Delete(fmt.Sprintf("psu:%s", psuId)); err != nil {
 		panic(err)
 	}
 	return err
@@ -99,9 +91,9 @@ func UpdatePSU(c *fiber.Ctx, db *surrealdb.DB) error {
 	if err != nil {
 		panic(err)
 	}
-	// changes := map[string]string{"name": "Jane"}
-	// if _, err = db.Change(selectedPsu.ID, changes); err != nil {
-	// 	panic(err)
-	// }
+
+	if _, err = db.Change(selectedPsu.ID, psu); err != nil {
+		panic(err)
+	}
 	return err
 }

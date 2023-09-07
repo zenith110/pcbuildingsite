@@ -7,8 +7,9 @@ import (
 )
 
 func SetupPsuRouter(app *fiber.App, db *surrealdb.DB) {
-	app.Get("/psu/", func(c *fiber.Ctx) error {
-		_, err := components.GetPsu(c, db)
+	app.Get("/psu/psuid", func(c *fiber.Ctx) error {
+		psuId := c.Params("psuid")
+		_, err := components.GetPsu(psuId, db)
 		return err
 	})
 	app.Post("/psu/", func(c *fiber.Ctx) error {
@@ -19,8 +20,9 @@ func SetupPsuRouter(app *fiber.App, db *surrealdb.DB) {
 		err := components.UpdatePSU(c, db)
 		return err
 	})
-	app.Delete("/psu/", func(c *fiber.Ctx) error {
-		err := components.DeletePsu(c, db)
+	app.Delete("/psu/psuid", func(c *fiber.Ctx) error {
+		psuId := c.Params("psuid")
+		err := components.DeletePsu(psuId, db)
 		return err
 	})
 }

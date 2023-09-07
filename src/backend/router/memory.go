@@ -7,16 +7,18 @@ import (
 )
 
 func SetupMemoryRouter(app *fiber.App, db *surrealdb.DB) {
-	app.Get("/memory/", func(c *fiber.Ctx) error {
-		_, err := components.GetMemory(c, db)
+	app.Get("/memory/:memoryid", func(c *fiber.Ctx) error {
+		memoryId := c.Params("memoryid")
+		_, err := components.GetMemory(memoryId, db)
 		return err
 	})
 	app.Post("/memory/", func(c *fiber.Ctx) error {
 		err := components.CreateMemory(c, db)
 		return err
 	})
-	app.Delete("/memory/", func(c *fiber.Ctx) error {
-		err := components.DeleteMemory(c, db)
+	app.Delete("/memory/memoryid", func(c *fiber.Ctx) error {
+		memoryId := c.Params("memoryid")
+		err := components.DeleteMemory(memoryId, db)
 		return err
 	})
 }

@@ -34,23 +34,18 @@ func CreateMemory(c *fiber.Ctx, db *surrealdb.DB) error {
 		panic(err)
 	}
 	// Insert memory
-	_, err := db.Create("Memory", memory)
+	_, err := db.Create("memory", memory)
 	if err != nil {
 		panic(err)
 	}
 	return err
 }
 
-func GetMemory(c *fiber.Ctx, db *surrealdb.DB) (Memory, error) {
-	memory := new(Memory)
-	if err := c.BodyParser(memory); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
+func GetMemory(memoryId string, db *surrealdb.DB) (Memory, error) {
 	if _, err := db.Use("Inventory", "Memory"); err != nil {
 		panic(err)
 	}
-	data, err := db.Select(memory.ID)
+	data, err := db.Select(fmt.Sprintf("memory:%s", memoryId))
 	if err != nil {
 		panic(err)
 	}
@@ -64,17 +59,13 @@ func GetMemory(c *fiber.Ctx, db *surrealdb.DB) (Memory, error) {
 	return *selectedMemory, err
 }
 
-func DeleteMemory(c *fiber.Ctx, db *surrealdb.DB) error {
+func DeleteMemory(memoryId string, db *surrealdb.DB) error {
 	if _, err := db.Use("Inventory", "Memory"); err != nil {
 		panic(err)
 	}
 	var err error
-	memory := new(Memory)
-	if err := c.BodyParser(memory); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
-	if _, err := db.Delete(memory.ID); err != nil {
+
+	if _, err := db.Delete(fmt.Sprintf("memory:%s", memoryId)); err != nil {
 		panic(err)
 	}
 	return err

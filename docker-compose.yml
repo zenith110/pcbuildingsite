@@ -1,0 +1,27 @@
+version: "3.3"
+
+services:
+  backend: 
+    container_name: backend
+    build: 
+      context: ./src/backend
+      dockerfile: .dockerfile
+    environment:
+      - DBHOST=surrealdb:8000
+      - DBUSERNAME=root
+      - DBPASSWORD=root
+    ports:
+      - "8080:8080"
+    depends_on:
+      - surrealdb
+    restart: always
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    container_name: surrealdb
+    restart: always
+    command: start --user root --pass root file:/data/database.db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+

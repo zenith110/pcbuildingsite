@@ -7,8 +7,9 @@ import (
 )
 
 func SetupComputerRouter(app *fiber.App, db *surrealdb.DB) {
-	app.Get("/computer/", func(c *fiber.Ctx) error {
-		_, err := components.GetComputer(c, db)
+	app.Get("/computer/computerid", func(c *fiber.Ctx) error {
+		computerId := c.Params("computerid")
+		_, err := components.GetComputer(computerId, db)
 		return err
 	})
 	app.Post("/computer/", func(c *fiber.Ctx) error {
@@ -17,6 +18,11 @@ func SetupComputerRouter(app *fiber.App, db *surrealdb.DB) {
 	})
 	app.Put("/computer/", func(c *fiber.Ctx) error {
 		err := components.UpdateComputer(c, db)
+		return err
+	})
+	app.Delete("/computer/computerid", func(c *fiber.Ctx) error {
+		computerId := c.Params("computerid")
+		err := components.DeleteComputer(computerId, db)
 		return err
 	})
 }

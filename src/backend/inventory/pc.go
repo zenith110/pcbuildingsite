@@ -30,14 +30,14 @@ func CreateComputer(c *fiber.Ctx, db *surrealdb.DB) (Computer, error) {
 		panic(err)
 	}
 	// Insert pc
-	_, err := db.Create("Computer", pc)
+	_, err := db.Create("computer", pc)
 	if err != nil {
 		panic(err)
 	}
 	return *pc, err
 }
 
-func GetComputer(c *fiber.Ctx, db *surrealdb.DB) (Computer, error) {
+func GetComputer(computerId string, db *surrealdb.DB) (Computer, error) {
 	if _, err := db.Use("Inventory", "Computer"); err != nil {
 		panic(err)
 	}
@@ -46,7 +46,7 @@ func GetComputer(c *fiber.Ctx, db *surrealdb.DB) (Computer, error) {
 		fmt.Println("error = ", err)
 		panic(err)
 	}
-	data, err := db.Select(computer.ID)
+	data, err := db.Select(fmt.Sprintf("computer:%s", computerId))
 	if err != nil {
 		panic(err)
 	}
@@ -69,7 +69,7 @@ func UpdateComputer(c *fiber.Ctx, db *surrealdb.DB) error {
 		fmt.Println("error = ", err)
 		panic(err)
 	}
-	data, err := db.Select(computer.ID)
+	data, err := db.Select(fmt.Sprintf("computer:%s", computerId))
 	if err != nil {
 		panic(err)
 	}
@@ -84,5 +84,16 @@ func UpdateComputer(c *fiber.Ctx, db *surrealdb.DB) error {
 	// if _, err = db.Change(selectedComputer.ID, changes); err != nil {
 	// 	panic(err)
 	// }
+	return err
+}
+
+func DeleteComputer(computerId string, db *surrealdb.DB) error {
+	if _, err := db.Use("Inventory", "Computer"); err != nil {
+		panic(err)
+	}
+	var err error
+	if _, err := db.Delete(fmt.Sprintf("computer:%s", computerId)); err != nil {
+		panic(err)
+	}
 	return err
 }

@@ -7,16 +7,18 @@ import (
 )
 
 func SetUpCpuRouter(app *fiber.App, db *surrealdb.DB) {
-	app.Get("/cpu/", func(c *fiber.Ctx) error {
-		_, err := components.GetCpu(c, db)
-		return err
+	app.Get("/cpu/:cpuid", func(c *fiber.Ctx) error {
+		cpuId := c.Params("cpuid")
+		data, _ := components.GetCpu(cpuId, db)
+		return c.JSON(data)
 	})
 	app.Post("/cpu/", func(c *fiber.Ctx) error {
-		_, err := components.CreateCpu(c, db)
-		return err
+		data, _ := components.CreateCpu(c, db)
+		return c.JSON(data)
 	})
-	app.Delete("/cpu/", func(c *fiber.Ctx) error {
-		err := components.DeleteCpu(c, db)
+	app.Delete("/cpu/:cpuid", func(c *fiber.Ctx) error {
+		cpuId := c.Params("cpuid")
+		err := components.DeleteCpu(cpuId, db)
 		return err
 	})
 }

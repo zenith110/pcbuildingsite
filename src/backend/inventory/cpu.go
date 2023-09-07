@@ -8,15 +8,15 @@ import (
 )
 
 type Cpu struct {
-	ID            string `json:"id,omitempty"`
-	Name          string `json:"name"`
-	Generation    string `json:"generation"`
-	Manufacturer  string `json:"manufacturer"`
-	Platform      string `json:"platform"`
-	Sold          bool   `json:"sold"`
-	DatePurchased string `json:"datepurchased"`
-	DateSold      string `json:"datesold"`
-	InStock       bool   `json:"instock"`
+	ID                     string `json:"id,omitempty"`
+	Name                   string `json:"name"`
+	GenerationRamSupported string `json:"generationoframsupported"`
+	Manufacturer           string `json:"manufacturer"`
+	Platform               string `json:"platform"`
+	Sold                   bool   `json:"sold"`
+	DatePurchased          string `json:"datepurchased"`
+	DateSold               string `json:"datesold"`
+	InStock                bool   `json:"instock"`
 }
 
 type Cpus struct {
@@ -32,24 +32,28 @@ func CreateCpu(c *fiber.Ctx, db *surrealdb.DB) (Cpu, error) {
 		fmt.Println("error = ", err)
 		panic(err)
 	}
+
 	// Insert cpu
-	_, err := db.Create("cpu", cpu)
+	data, err := db.Create("cpu", cpu)
+	if err != nil {
+		panic(err)
+	}
+	createdUser := make([]Cpu, 1)
+	err = surrealdb.Unmarshal(data, &createdUser)
+
 	if err != nil {
 		panic(err)
 	}
 	return *cpu, err
 }
 
-func GetCpu(c *fiber.Ctx, db *surrealdb.DB) (Cpu, error) {
+func GetCpu(cpuId string, db *surrealdb.DB) (Cpu, error) {
 	if _, err := db.Use("Inventory", "CPU"); err != nil {
 		panic(err)
 	}
-	cpu := new(Cpu)
-	if err := c.BodyParser(cpu); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
-	data, err := db.Select(cpu.ID)
+
+	// Get user by ID
+	data, err := db.Select(fmt.Sprintf("cpu:%s", cpuId))
 	if err != nil {
 		panic(err)
 	}
@@ -60,20 +64,17 @@ func GetCpu(c *fiber.Ctx, db *surrealdb.DB) (Cpu, error) {
 	if err != nil {
 		panic(err)
 	}
+
 	return *selectedCpu, err
 }
 
-func DeleteCpu(c *fiber.Ctx, db *surrealdb.DB) error {
+func DeleteCpu(cpuId string, db *surrealdb.DB) error {
 	if _, err := db.Use("Inventory", "CPU"); err != nil {
 		panic(err)
 	}
 	var err error
-	cpu := new(Cpu)
-	if err := c.BodyParser(cpu); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
-	if _, err := db.Delete(cpu.ID); err != nil {
+
+	if _, err := db.Delete(fmt.Sprintf("cpu:%s", cpuId)); err != nil {
 		panic(err)
 	}
 	return err

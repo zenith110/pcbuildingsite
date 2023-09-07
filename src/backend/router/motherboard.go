@@ -7,16 +7,18 @@ import (
 )
 
 func SetupMotherboardRouter(app *fiber.App, db *surrealdb.DB) {
-	app.Get("/motherboard/", func(c *fiber.Ctx) error {
-		_, err := components.GetMotherboard(c, db)
+	app.Get("/motherboard/:motherboardId", func(c *fiber.Ctx) error {
+		motherboardId := c.Params("motherboardId")
+		_, err := components.GetMotherboard(motherboardId, db)
 		return err
 	})
 	app.Post("/motherboard/", func(c *fiber.Ctx) error {
 		_, err := components.CreateMotherboard(c, db)
 		return err
 	})
-	app.Delete("/motherboard/", func(c *fiber.Ctx) error {
-		err := components.DeleteMotherboard(c, db)
+	app.Delete("/motherboard/motherboardId", func(c *fiber.Ctx) error {
+		motherboardId := c.Params("motherboardId")
+		err := components.DeleteMotherboard(motherboardId, db)
 		return err
 	})
 }

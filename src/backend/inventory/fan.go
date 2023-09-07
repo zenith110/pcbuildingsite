@@ -39,16 +39,11 @@ func CreateFan(c *fiber.Ctx, db *surrealdb.DB) (Fan, error) {
 	return *fan, err
 }
 
-func GetFan(c *fiber.Ctx, db *surrealdb.DB) (Fan, error) {
+func GetFan(fanId string, db *surrealdb.DB) (Fan, error) {
 	if _, err := db.Use("Inventory", "Fan"); err != nil {
 		panic(err)
 	}
-	fan := new(Fan)
-	if err := c.BodyParser(fan); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
-	data, err := db.Select(fan.ID)
+	data, err := db.Select(fmt.Sprintf("fan:%s", fanId))
 	if err != nil {
 		panic(err)
 	}
@@ -62,17 +57,12 @@ func GetFan(c *fiber.Ctx, db *surrealdb.DB) (Fan, error) {
 	return *selectedFan, err
 }
 
-func DeleteFan(c *fiber.Ctx, db *surrealdb.DB) error {
+func DeleteFan(fanId string, db *surrealdb.DB) error {
 	if _, err := db.Use("Inventory", "Fan"); err != nil {
 		panic(err)
 	}
 	var err error
-	fan := new(Fan)
-	if err := c.BodyParser(fan); err != nil {
-		fmt.Println("error = ", err)
-		panic(err)
-	}
-	if _, err := db.Delete(fan.ID); err != nil {
+	if _, err := db.Delete(fmt.Sprintf("fan:%s", fanId)); err != nil {
 		panic(err)
 	}
 	return err
